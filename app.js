@@ -19,12 +19,14 @@ const adminPassword = 'miamom'; // This will be hashed
 
 // Initialize users in localStorage if empty
 if (!localStorage.getItem('users')) {
-    const hashedAdminPassword = await hashPassword(adminPassword);
-    const adminUser = {
-        username: adminUsername,
-        hashedPassword: hashedAdminPassword
-    };
-    localStorage.setItem('users', JSON.stringify([adminUser]));
+    (async () => {
+        const hashedAdminPassword = await hashPassword(adminPassword);
+        const adminUser = {
+            username: adminUsername,
+            hashedPassword: hashedAdminPassword
+        };
+        localStorage.setItem('users', JSON.stringify([adminUser]));
+    })();
 }
 
 // Handle Registration
@@ -61,8 +63,9 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         let users = JSON.parse(localStorage.getItem('users')) || [];
         const user = users.find(user => user.username === username);
         
-        // Check for admin credentials
-        if (username === adminUsername && hashedPassword === await hashPassword(adminPassword)) {
+        // Hash the admin password and check for admin login
+        const hashedAdminPassword = await hashPassword(adminPassword);
+        if (username === adminUsername && hashedPassword === hashedAdminPassword) {
             alert('Admin login successful!');
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('auth-interface').style.display = 'none';
