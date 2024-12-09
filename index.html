@@ -3,26 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Vault - Admin</title>
+    <title>Secure Vault</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1-crypto-js.js"></script>
 </head>
 <body>
     <div id="auth-interface">
         <h1>Welcome to the Secure Vault</h1>
-        
-        <!-- Admin Login Form -->
-        <h2>Admin Login</h2>
-        <form id="admin-login-form">
-            <label for="admin-username">Username:</label>
-            <input type="text" id="admin-username" placeholder="Enter Admin Username"><br><br>
 
-            <label for="admin-password">Password:</label>
-            <input type="password" id="admin-password" placeholder="Enter Admin Password"><br><br>
+        <!-- Buttons to switch between Login and Register -->
+        <button id="show-login-btn">Login</button>
+        <button id="show-register-btn">Register</button>
 
-            <button type="button" id="login-btn">Login</button>
-        </form>
-        <p id="auth-message"></p>
+        <!-- Login Form -->
+        <div id="login-form" style="display: none;">
+            <h2>Login</h2>
+            <form id="admin-login-form">
+                <label for="login-username">Username:</label>
+                <input type="text" id="login-username" placeholder="Enter Username"><br><br>
+
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" placeholder="Enter Password"><br><br>
+
+                <button type="button" id="login-btn">Login</button>
+            </form>
+            <p id="auth-message"></p>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" style="display: none;">
+            <h2>Register</h2>
+            <form id="register-form">
+                <label for="register-username">Username:</label>
+                <input type="text" id="register-username" placeholder="Enter Username"><br><br>
+
+                <label for="register-password">Password:</label>
+                <input type="password" id="register-password" placeholder="Enter Password"><br><br>
+
+                <button type="button" id="register-btn">Register</button>
+            </form>
+            <p id="auth-message"></p>
+        </div>
     </div>
 
     <div id="admin-panel" style="display: none;">
