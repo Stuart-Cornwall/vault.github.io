@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vault with User Accounts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Secure Vault</h1>
+
+    <!-- Registration and Login Interface -->
+    <div id="auth-interface">
+        <h2>Register / Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="auth-password" placeholder="Password">
+        <button id="register-btn">Register</button>
+        <button id="login-btn">Login</button>
+        <p id="auth-message"></p>
+    </div>
+
+    <!-- User Vault Interface -->
+    <div id="user-interface" style="display: none;">
+        <textarea id="data" placeholder="Enter your data"></textarea>
+        <input type="password" id="password" placeholder="Encryption Password">
+        <button id="encrypt-btn">Encrypt & Save</button>
+        <button id="decrypt-btn">Decrypt</button>
+        <button id="logout-btn">Logout</button>
+        <pre id="output"></pre>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" style="display: none;">
+        <h2>Admin Panel</h2>
+        <p>Manage all user data:</p>
+        <pre id="admin-output"></pre>
+        <button id="export-data-btn">Export All Data</button>
+        <button id="import-data-btn">Import Data</button>
+        <input type="file" id="import-file" style="display: none;">
+        <button id="logout-admin-btn">Logout</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="script.js" defer></script>
+</body>
+</html>
