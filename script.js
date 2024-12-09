@@ -2,8 +2,11 @@
 let userAccounts = {}; // { username: { passwordHash, passwordPlaintext, encryptedData } }
 let currentUser = null;
 
-// Hardcoded admin password (hash of "secureAdminPass123")
-const hashedAdminPassword = "e99a18c428cb38d5f260853678922e03"; // MD5 hash
+// Hardcoded admin credentials
+const adminCredentials = {
+    username: "admin",
+    password: "miamom" // Updated password
+};
 
 // Hash function
 function hashPassword(password) {
