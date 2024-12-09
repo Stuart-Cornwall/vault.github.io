@@ -1,122 +1,67 @@
-// Hardcoded admin credentials
-const adminCredentials = {
-    username: "admin",
-    password: "miamom" // Updated password
-};
-
-// Storage for user accounts and data
-let userAccounts = {}; // { username: { passwordHash, passwordPlaintext, encryptedData } }
-let currentUser = null;
-
-// Hash function
-function hashPassword(password) {
-    return CryptoJS.MD5(password).toString();
+// Function to hash password using Web Crypto API (SHA-256)
+async function hashPassword(password) {
+    const encoder = new TextEncoder(); // Converts string to Uint8Array
+    const data = encoder.encode(password);
+    
+    // SHA-256 hashing
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    
+    // Convert ArrayBuffer to hex string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    
+    return hashHex; // Return hashed password
 }
 
-// Encryption functions
-function encryptData(data, password) {
-    return CryptoJS.AES.encrypt(JSON.stringify(data), password).toString();
-}
-
-function decryptData(encryptedData, password) {
-    const bytes = CryptoJS.AES.decrypt(encryptedData, password);
-    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-}
-
-// Show the login form
-document.getElementById('show-login-btn').addEventListener('click', () => {
-    document.getElementById('login-form').style.display = "block";
-    document.getElementById('register-form').style.display = "none";
-    document.getElementById('auth-message').innerText = "";
-});
-
-// Show the register form
-document.getElementById('show-register-btn').addEventListener('click', () => {
-    document.getElementById('register-form').style.display = "block";
-    document.getElementById('login-form').style.display = "none";
-    document.getElementById('auth-message').innerText = "";
-});
-
-// Admin Login
-document.getElementById('login-btn').addEventListener('click', () => {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    if (username === adminCredentials.username && password === adminCredentials.password) {
-        // If login is successful, show the admin panel
-        document.getElementById('auth-interface').style.display = "none";
-        document.getElementById('admin-panel').style.display = "block";
-        displayAdminData();
-    } else {
-        // If login fails, show an error message
-        document.getElementById('auth-message').innerText = "Invalid admin credentials.";
-    }
-});
-
-// Registration
-document.getElementById('register-btn').addEventListener('click', () => {
+// Handle Registration
+document.getElementById('register-btn').addEventListener('click', async () => {
     const username = document.getElementById('register-username').value;
     const password = document.getElementById('register-password').value;
-
-    // Hash the password before storing
-    const passwordHash = hashPassword(password);
-    const passwordPlaintext = password;
-
-    // Store the user account
-    userAccounts[username] = { passwordHash, passwordPlaintext, encryptedData: "" };
-
-    document.getElementById('auth-message').innerText = `User ${username} registered successfully!`;
-    document.getElementById('register-username').value = '';
-    document.getElementById('register-password').value = '';
+    
+    if (username && password) {
+        // Hash the password before saving
+        const hashedPassword = await hashPassword(password);
+        
+        // Save the username and hashed password to localStorage (for simplicity)
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        users.push({ username, hashedPassword });
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        alert('User registered successfully!');
+        document.getElementById('register-form').reset();
+    } else {
+        alert('Please enter both username and password');
+    }
 });
 
-// Display Admin Panel Data
-function displayAdminData() {
-    let output = "<h3>User Accounts</h3><table><tr><th>Username</th><th>Password Hash</th><th>Actions</th></tr>";
-
-    for (const username in userAccounts) {
-        const user = userAccounts[username];
-        output += `<tr>
-                        <td>${username}</td>
-                        <td>${user.passwordHash}</td>
-                        <td><button onclick="editUser('${username}')">Edit</button></td>
-                    </tr>`;
+// Handle Login
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    
+    if (username && password) {
+        // Hash the entered password
+        const hashedPassword = await hashPassword(password);
+        
+        // Check if user exists and if the hashed password matches
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(user => user.username === username);
+        
+        if (user && user.hashedPassword === hashedPassword) {
+            alert('Login successful!');
+            // Show admin panel or other protected content
+            document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('auth-interface').style.display = 'none';
+        } else {
+            alert('Invalid username or password');
+        }
+    } else {
+        alert('Please enter both username and password');
     }
+});
 
-    output += "</table>";
-    document.getElementById('admin-output').innerHTML = output;
-}
-
-// Edit User Data
-function editUser(username) {
-    const user = userAccounts[username];
-    document.getElementById('edit-username').value = username;
-    document.getElementById('edit-password').value = "";
-    document.getElementById('edit-encryptedData').value = user.encryptedData;
-
-    document.getElementById('admin-edit-form').style.display = "block";
-
-    // Save changes
-    document.getElementById('save-edit-btn').onclick = () => {
-        const newPassword = document.getElementById('edit-password').value;
-        const newEncryptedData = document.getElementById('edit-encryptedData').value;
-
-        if (newPassword) {
-            userAccounts[username].passwordHash = hashPassword(newPassword);
-            userAccounts[username].passwordPlaintext = newPassword;
-        }
-        if (newEncryptedData) {
-            userAccounts[username].encryptedData = newEncryptedData;
-        }
-
-        // Refresh admin data view
-        displayAdminData();
-        document.getElementById('admin-edit-form').style.display = "none";
-    };
-}
-
-// Logout as Admin
+// Handle Logout
 document.getElementById('logout-admin-btn').addEventListener('click', () => {
-    document.getElementById('admin-panel').style.display = "none";
-    document.getElementById('auth-interface').style.display = "block";
+    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('auth-interface').style.display = 'block';
 });
