@@ -3,44 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Vault with User Accounts</title>
+    <title>Secure Vault - Admin</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1-crypto-js.js"></script>
 </head>
 <body>
-    <h1>Secure Vault</h1>
-
-    <!-- Registration and Login Interface -->
     <div id="auth-interface">
-        <h2>Register / Login</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="auth-password" placeholder="Password">
-        <button id="register-btn">Register</button>
-        <button id="login-btn">Login</button>
+        <h1>Welcome to the Secure Vault</h1>
+        <h2>Register</h2>
+        <form id="register-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter Username"><br><br>
+
+            <label for="auth-password">Password:</label>
+            <input type="password" id="auth-password" placeholder="Enter Password"><br><br>
+
+            <button type="button" id="register-btn">Register</button>
+        </form>
         <p id="auth-message"></p>
     </div>
 
-    <!-- User Vault Interface -->
-    <div id="user-interface" style="display: none;">
-        <textarea id="data" placeholder="Enter your data"></textarea>
-        <input type="password" id="password" placeholder="Encryption Password">
-        <button id="encrypt-btn">Encrypt & Save</button>
-        <button id="decrypt-btn">Decrypt</button>
-        <button id="logout-btn">Logout</button>
-        <pre id="output"></pre>
-    </div>
-
-    <!-- Admin Panel -->
     <div id="admin-panel" style="display: none;">
         <h2>Admin Panel</h2>
-        <p>Manage all user data:</p>
-        <pre id="admin-output"></pre>
-        <button id="export-data-btn">Export All Data</button>
-        <button id="import-data-btn">Import Data</button>
-        <input type="file" id="import-file" style="display: none;">
-        <button id="logout-admin-btn">Logout</button>
+        <div id="admin-output"></div>
+
+        <div id="admin-edit-form" style="display: none;">
+            <h3>Edit User</h3>
+            <form>
+                <label for="edit-username">Username:</label>
+                <input type="text" id="edit-username" disabled><br><br>
+
+                <label for="edit-password">New Password:</label>
+                <input type="password" id="edit-password"><br><br>
+
+                <label for="edit-encryptedData">Encrypted Data:</label>
+                <textarea id="edit-encryptedData"></textarea><br><br>
+
+                <button type="button" id="save-edit-btn">Save Changes</button>
+            </form>
+        </div>
+
+        <button id="logout-admin-btn">Logout as Admin</button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="script.js" defer></script>
+    <script src="app.js"></script>
 </body>
 </html>
