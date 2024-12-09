@@ -13,6 +13,20 @@ async function hashPassword(password) {
     return hashHex; // Return hashed password
 }
 
+// Default Admin Credentials (for testing purposes)
+const adminUsername = 'admin';
+const adminPassword = 'miamom'; // This will be hashed
+
+// Initialize users in localStorage if empty
+if (!localStorage.getItem('users')) {
+    const hashedAdminPassword = await hashPassword(adminPassword);
+    const adminUser = {
+        username: adminUsername,
+        hashedPassword: hashedAdminPassword
+    };
+    localStorage.setItem('users', JSON.stringify([adminUser]));
+}
+
 // Handle Registration
 document.getElementById('register-btn').addEventListener('click', async () => {
     const username = document.getElementById('register-username').value;
@@ -47,9 +61,13 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         let users = JSON.parse(localStorage.getItem('users')) || [];
         const user = users.find(user => user.username === username);
         
-        if (user && user.hashedPassword === hashedPassword) {
+        // Check for admin credentials
+        if (username === adminUsername && hashedPassword === await hashPassword(adminPassword)) {
+            alert('Admin login successful!');
+            document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('auth-interface').style.display = 'none';
+        } else if (user && user.hashedPassword === hashedPassword) {
             alert('Login successful!');
-            // Show admin panel or other protected content
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('auth-interface').style.display = 'none';
         } else {
