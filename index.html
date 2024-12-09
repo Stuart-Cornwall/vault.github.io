@@ -3,76 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Vault</title>
-    <!-- Link to the correct styles.css file -->
+    <title>Info Saver</title>
     <link rel="stylesheet" href="styles.css">
-    
-    <!-- Corrected CryptoJS CDN link -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1-crypto-js.min.js"></script>
 </head>
 <body>
+
+    <!-- Authentication Interface (Login/Registration) -->
     <div id="auth-interface">
-        <h1>Welcome to the Secure Vault</h1>
-
-        <!-- Buttons to switch between Login and Register -->
-        <button id="show-login-btn">Login</button>
-        <button id="show-register-btn">Register</button>
-
-        <!-- Login Form -->
-        <div id="login-form" style="display: none;">
-            <h2>Login</h2>
-            <form id="admin-login-form">
-                <label for="login-username">Username:</label>
-                <input type="text" id="login-username" placeholder="Enter Username"><br><br>
-
-                <label for="login-password">Password:</label>
-                <input type="password" id="login-password" placeholder="Enter Password"><br><br>
-
-                <button type="button" id="login-btn">Login</button>
-            </form>
-            <p id="auth-message"></p>
+        <div id="register-form">
+            <input type="text" id="register-username" placeholder="Username">
+            <input type="password" id="register-password" placeholder="Password">
+            <button id="register-btn">Register</button>
         </div>
-
-        <!-- Register Form -->
-        <div id="register-form" style="display: none;">
-            <h2>Register</h2>
-            <form id="register-form">
-                <label for="register-username">Username:</label>
-                <input type="text" id="register-username" placeholder="Enter Username"><br><br>
-
-                <label for="register-password">Password:</label>
-                <input type="password" id="register-password" placeholder="Enter Password"><br><br>
-
-                <button type="button" id="register-btn">Register</button>
-            </form>
-            <p id="auth-message"></p>
+        <div id="login-form">
+            <input type="text" id="login-username" placeholder="Username">
+            <input type="password" id="login-password" placeholder="Password">
+            <button id="login-btn">Login</button>
         </div>
     </div>
 
+    <!-- Admin Panel (visible after login) -->
     <div id="admin-panel" style="display: none;">
-        <h2>Admin Panel</h2>
-        <div id="admin-output"></div>
-
-        <div id="admin-edit-form" style="display: none;">
-            <h3>Edit User</h3>
-            <form>
-                <label for="edit-username">Username:</label>
-                <input type="text" id="edit-username" disabled><br><br>
-
-                <label for="edit-password">New Password:</label>
-                <input type="password" id="edit-password"><br><br>
-
-                <label for="edit-encryptedData">Encrypted Data:</label>
-                <textarea id="edit-encryptedData"></textarea><br><br>
-
-                <button type="button" id="save-edit-btn">Save Changes</button>
-            </form>
-        </div>
-
-        <button id="logout-admin-btn">Logout as Admin</button>
+        <h2>Welcome to the Admin Panel</h2>
+        <button id="logout-admin-btn">Logout</button>
     </div>
 
-    <!-- Your custom app.js script -->
     <script src="app.js"></script>
 </body>
 </html>
