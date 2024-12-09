@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vault with Admin Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+        }
+        textarea, input {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            width: 48%;
+            margin: 5px 1%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #admin-panel {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Secure Vault</h1>
+    <div id="user-interface">
+        <textarea id="data" placeholder="Enter your data"></textarea>
+        <input type="password" id="password" placeholder="Password">
+        <button id="encrypt-btn">Encrypt & Save</button>
+        <button id="decrypt-btn">Decrypt</button>
+        <button id="admin-login-btn">Admin Login</button>
+        <pre id="output"></pre>
+    </div>
+
+    <div id="admin-panel">
+        <h2>Admin Panel</h2>
+        <p>Manage all stored data:</p>
+        <pre id="admin-output"></pre>
+        <button id="export-data-btn">Export Data</button>
+        <button id="import-data-btn">Import Data</button>
+        <input type="file" id="import-file" style="display: none;">
+        <button id="logout-btn">Logout</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        // In-memory storage for demonstration
+        let vaultData = {};
+
+        // Hardcoded admin password
+        const adminPassword = "secureAdminPass123";
+
+        // Encryption functions
+        function encryptData(data, password) {
+            return CryptoJS.AES.encrypt(JSON.stringify(data), password).toString();
+        }
+
+        function decryptData(encryptedData, password) {
+            const bytes = CryptoJS.AES.decrypt(encryptedData, password);
+            return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        }
+
+        // Save encrypted data to local storage
+        function saveToLocalStorage(encryptedData) {
+            localStorage.setItem('encryptedVault', encryptedData);
+        }
+
+        // Load encrypted data from local storage
+        function loadFromLocalStorage() {
+            return localStorage.getItem('encryptedVault');
+        }
+
+        // User Interface Actions
+        document.getElementById('encrypt-btn').addEventListener('click', () => {
+            const data = document.getElementById('data').value;
+            const password = document.getElementById('password').value;
+
+            if (!data || !password) {
+                document.getElementById('output').innerText = "Please enter both data and password.";
+                return;
+            }
+
+            const encryptedData = encryptData(data, password);
+            saveToLocalStorage(encryptedData);
+            document.getElementById('output').innerText = "Data encrypted and saved!";
+        });
+
+        document.getElementById('decrypt-btn').addEventListener('click', () => {
+            const password = document.getElementById('password').value;
+            const encryptedData = loadFromLocalStorage();
+
+            if (!encryptedData || !password) {
+                document.getElementById('output').innerText = "No data found or password missing.";
+                return;
+            }
+
+            try {
+                const decryptedData = decryptData(encryptedData, password);
+                document.getElementById('output').innerText = `Decrypted Data: ${decryptedData}`;
+            } catch {
+                document.getElementById('output').innerText = "Decryption failed. Incorrect password.";
+            }
+        });
+
+        // Admin Login
+        document.getElementById('admin-login-btn').addEventListener('click', () => {
+            const password = prompt("Enter admin password:");
+            if (password === adminPassword) {
+                document.getElementById('user-interface').style.display = "none";
+                document.getElementById('admin-panel').style.display = "block";
+                displayAdminData();
+            } else {
+                alert("Incorrect admin password.");
+            }
+        });
+
+        // Admin Panel Functions
+        function displayAdminData() {
+            const encryptedData = loadFromLocalStorage();
+            document.getElementById('admin-output').innerText = encryptedData ? encryptedData : "No data found.";
+        }
+
+        document.getElementById('export-data-btn').addEventListener('click', () => {
+            const encryptedData = loadFromLocalStorage();
+            if (encryptedData) {
+                const blob = new Blob([encryptedData], { type: "text/plain" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "vault-data.txt";
+                a.click();
+            } else {
+                alert("No data to export.");
+            }
+        });
+
+        document.getElementById('import-data-btn').addEventListener('click', () => {
+            document.getElementById('import-file').click();
+        });
+
+        document.getElementById('import-file').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    saveToLocalStorage(e.target.result);
+                    displayAdminData();
+                    alert("Data imported successfully.");
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            document.getElementById('user-interface').style.display = "block";
+            document.getElementById('admin-panel').style.display = "none";
+        });
+    </script>
+</body>
+</html>
