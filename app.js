@@ -1,12 +1,12 @@
-// Storage for user accounts and data
-let userAccounts = {}; // { username: { passwordHash, passwordPlaintext, encryptedData } }
-let currentUser = null;
-
 // Hardcoded admin credentials
 const adminCredentials = {
     username: "admin",
     password: "miamom" // Updated password
 };
+
+// Storage for user accounts and data
+let userAccounts = {}; // { username: { passwordHash, passwordPlaintext, encryptedData } }
+let currentUser = null;
 
 // Hash function
 function hashPassword(password) {
@@ -22,6 +22,22 @@ function decryptData(encryptedData, password) {
     const bytes = CryptoJS.AES.decrypt(encryptedData, password);
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 }
+
+// Admin Login
+document.getElementById('login-btn').addEventListener('click', () => {
+    const username = document.getElementById('admin-username').value;
+    const password = document.getElementById('admin-password').value;
+
+    if (username === adminCredentials.username && password === adminCredentials.password) {
+        // If login is successful, show the admin panel
+        document.getElementById('auth-interface').style.display = "none";
+        document.getElementById('admin-panel').style.display = "block";
+        displayAdminData();
+    } else {
+        // If login fails, show an error message
+        document.getElementById('auth-message').innerText = "Invalid admin credentials.";
+    }
+});
 
 // Registration
 document.getElementById('register-btn').addEventListener('click', () => {
