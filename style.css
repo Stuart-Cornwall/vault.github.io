@@ -1,32 +1,83 @@
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    max-width: 600px;
-    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-h1, h2 {
-    text-align: center;
+h1, h2, h3 {
+    color: #2e3d49;
 }
 
-textarea, input {
+h3 {
+    margin-top: 20px;
+}
+
+/* Centering the content */
+#auth-interface, #admin-panel {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+/* Form Styles */
+input, button, textarea {
     width: 100%;
-    margin: 10px 0;
     padding: 10px;
-    font-size: 16px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 button {
-    width: 48%;
-    margin: 5px 1%;
-    padding: 10px;
-    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
     cursor: pointer;
+    font-size: 16px;
 }
 
-pre {
-    background-color: #f4f4f4;
+button:hover {
+    background-color: #45a049;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
     padding: 10px;
-    border: 1px solid #ccc;
-    overflow-x: auto;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button {
+    margin: 5px;
+}
+
+button:focus {
+    outline: none;
 }
