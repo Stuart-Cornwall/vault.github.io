@@ -9,6 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden; /* Ensures no scrollbars */
 }
 
 h1, h2, h3 {
@@ -19,42 +20,82 @@ h3 {
     margin-top: 20px;
 }
 
-/* Centering the content */
+/* Full screen content container */
 #auth-interface, #admin-panel {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 70%; /* Make it wider */
+    max-width: 800px; /* Max width for large screens */
+    min-width: 400px; /* Prevent it from being too narrow */
+    text-align: center; /* Center the text inside */
+    box-sizing: border-box; /* Ensure padding doesn't overflow */
 }
 
-/* Form Styles */
-input, button, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
+/* Buttons to switch between Login and Register */
 button {
+    width: 48%;
+    padding: 12px;
+    font-size: 16px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    box-sizing: border-box;
 }
 
 button:hover {
     background-color: #45a049;
 }
 
+/* Form Styles */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 textarea {
     resize: vertical;
+    min-height: 100px;
 }
 
 /* Table Styles */
 table {
     width: 100%;
     margin-top: 20px;
-   
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+button {
+    margin-top: 5px;
+    padding: 5px 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #auth-interface, #admin-panel {
+        width: 90%;
+        min-width: 300px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
