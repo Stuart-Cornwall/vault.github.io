@@ -10,15 +10,17 @@
 <body>
     <div id="auth-interface">
         <h1>Welcome to the Secure Vault</h1>
-        <h2>Register</h2>
-        <form id="register-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" placeholder="Enter Username"><br><br>
+        
+        <!-- Admin Login Form -->
+        <h2>Admin Login</h2>
+        <form id="admin-login-form">
+            <label for="admin-username">Username:</label>
+            <input type="text" id="admin-username" placeholder="Enter Admin Username"><br><br>
 
-            <label for="auth-password">Password:</label>
-            <input type="password" id="auth-password" placeholder="Enter Password"><br><br>
+            <label for="admin-password">Password:</label>
+            <input type="password" id="admin-password" placeholder="Enter Admin Password"><br><br>
 
-            <button type="button" id="register-btn">Register</button>
+            <button type="button" id="login-btn">Login</button>
         </form>
         <p id="auth-message"></p>
     </div>
